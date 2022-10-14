@@ -13,6 +13,8 @@ function App() {
 
     const [getError,setError] = useState("");
 
+    const[username,setusername] =useState("");
+
     const onChangeHandler=(event)=>{
         setForm({
           ...getForm,
@@ -46,45 +48,86 @@ function App() {
         setError('Password Error');
         return true;
       }
+
+      if(!/^[a-zA-z0-9\s]*$/.test(getForm.name)){
+        setError('Name is not alphanumeric');
+        return true;
+      }
+
+      if(!(getForm.email).includes("@")){
+        setError('Email must contain @');
+        return true;
+      }
+  
+      if(!/^(male|female|other)$/.test(getForm.gender)){
+        setError(' Please identify as male, female or others');
+        return true;
+      }
+
+      if(!/^[0-9]*$/.test(getForm.phoneNumber)){
+        setError('Phone Number must contain only numbers');
+        return true;
+      }
+
+      if(getForm.password.length<=6){
+        setError('Password must contain atleast 6 letters');
+        return true;
+      }
+
+
           return false;
     }
 
     const onSubmitHandler=(event)=>{
       setError('');
+      setusername('');
        event.preventDefault();
        if(getErrorHandler()){
             return true;
        }
-       alert("success");
+       let username = getForm.email.split("@")[0];
+       setusername(`Hello ${username}`);
+       clearInputs();
 
+    }
+
+    function clearInputs(){
+      setForm({
+        name:'',
+        email:'',
+        gender:'male',
+        phoneNumber:'',
+        password:''
+      })
     }
 
 
    return (<div>
         <form>
           <div>
-            Name:<input type="text" onChange={onChangeHandler} data-testid='name' name="name"/>
+            Name:<input type="text" value={getForm.name} onChange={onChangeHandler} data-testid='name' name="name"/>
           </div>
           <div>
-          Email address :<input type="email" onChange={onChangeHandler} data-testid='email' name="email"/>
+          Email address :<input type="email"  value={getForm.email} onChange={onChangeHandler} data-testid='email' name="email"/>
           </div>
           <div>
-            Gender:<select data-testid='gender' onChange={onChangeHandler} name="gender">
+            Gender:<select data-testid='gender' value={getForm.gender} onChange={onChangeHandler} name="gender">
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Others</option>
             </select>
           </div>
           <div>
-            Phone:<input type="number" onChange={onChangeHandler} data-testid = 'phoneNumber' name="phoneNumber"/>
+            Phone:<input type="number"  value={getForm.phoneNumber} onChange={onChangeHandler} data-testid = 'phoneNumber' name="phoneNumber"/>
           </div>
           <div>
-            Password:<input type="password" onChange={onChangeHandler} data-testid='password' name="password"/>
+            Password:<input type="password" value={getForm.password} onChange={onChangeHandler} data-testid='password' name="password"/>
           </div>
           <div>
             <button data-testid='submit' onClick={onSubmitHandler}>Submit</button>
           </div>
           {getError}
+          {username && <h1>{username}</h1>}
         </form>
    </div>)
 }
