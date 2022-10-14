@@ -1,0 +1,17 @@
+form {
+  margin: 200px;
+}
+
+select {
+  width: 50%;
+  height: 100%;
+}
+
+input {
+  width: 50%;
+  height: 100%;
+}
+
+h2 {
+  text-align: center;
+}
